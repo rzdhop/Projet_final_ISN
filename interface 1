@@ -1,0 +1,55 @@
+from tkinter import*
+from tkinter.filedialog import *
+
+def img_pass():
+    filepath = askopenfilename(title="Choisissez l'image",filetypes=[('png files','.png'),('all files','.*')])
+    photo = PhotoImage(file=filepath)
+    #affiche l'image a décripter dans une nouvelle fentre
+    fenetre_2 = Toplevel(fenetre_1)
+    Image_canvas = Canvas(fenetre_2, width=photo.width(), height=photo.height(),bg="red")
+    Image_canvas.create_image(0,0,anchor=NW,image=photo)
+    Image_canvas.place(relx=0, rely= 0,anchor=NW)
+    fenetre_2.minsize(photo.width(),photo.height())
+    fenetre_2.maxsize(photo.width(),photo.height())
+    fenetre_2.title("Image Password {}".format(filepath))
+
+fenetre_1 = Tk()
+
+fenetre_1.title("Stéganoraphie by Rida and Yasin")
+
+#dimension et emplacement de la fentre au lancement du programme
+fenetre_1.geometry("800x600+0+0")
+
+ecran_x = fenetre_1.winfo_screenwidth()
+ecran_y = fenetre_1.winfo_screenheight()
+
+fenetre_x = 800
+fenetre_y = 600
+
+posX = (ecran_x // 2) - (fenetre_x // 2)
+posY = (ecran_y // 2) - (fenetre_y // 2)
+
+geo =("{}x{}+{}+{}".format(fenetre_x,fenetre_y,posX,posY))
+
+fenetre_1.geometry(geo)
+
+fenetre_1.minsize(650,400)#taille min en x*y
+
+#afficher l'image pour décripter
+Select_img = Button(fenetre_1,text="selectionnez une image",command = img_pass)
+Select_img.place(relx=0.5, rely=0.3,height= 50,width= 300, anchor=CENTER)
+
+#afficher une ligne de séparation
+x1= ecran_x * 0.005
+x2= ecran_x * 0.9
+y1= 3
+y2= 2
+ligne_sepa = Canvas(fenetre_1,height = 10, width = 750)
+ligne_sepa.create_line(x1,y1,x2,y2,width=5,fill='grey')
+ligne_sepa.place(relx=0.5, rely=0.4, anchor=CENTER)
+
+#Bouton quitter
+boutton_quit = Button(fenetre_1,text="Quitter", command = fenetre_1.destroy)
+boutton_quit.place(relx=0.85, rely=0.85,width= 100, height= 50, anchor=CENTER)
+
+fenetre_1.mainloop()
