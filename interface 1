@@ -4,6 +4,7 @@ from tkinter.filedialog import *
 def img_pass():
     filepath = askopenfilename(title="Choisissez l'image",filetypes=[('png files','.png'),('all files','.*')])
     photo = PhotoImage(file=filepath)
+    global photo
     #affiche l'image a décripter dans une nouvelle fentre
     fenetre_2 = Toplevel(fenetre_1)
     Image_canvas = Canvas(fenetre_2, width=photo.width(), height=photo.height(),bg="red")
@@ -11,7 +12,7 @@ def img_pass():
     Image_canvas.place(relx=0, rely= 0,anchor=NW)
     fenetre_2.minsize(photo.width(),photo.height())
     fenetre_2.maxsize(photo.width(),photo.height())
-    fenetre_2.title("Image Password {}".format(filepath))
+    fenetre_2.title("Image Hidded {}".format(filepath))
 
 fenetre_1 = Tk()
 
@@ -36,8 +37,7 @@ fenetre_1.geometry(geo)
 fenetre_1.minsize(650,400)#taille min en x*y
 
 #afficher l'image pour décripter
-Select_img = Button(fenetre_1,text="selectionnez une image",command = img_pass)
-Select_img.place(relx=0.5, rely=0.3,height= 50,width= 300, anchor=CENTER)
+Select_img = Button(fenetre_1,text="selectionnez une image",command = img_pass).place(relx=0.5, rely=0.3,height= 50,width= 300, anchor=CENTER)
 
 #afficher une ligne de séparation
 x1= ecran_x * 0.005
@@ -49,7 +49,6 @@ ligne_sepa.create_line(x1,y1,x2,y2,width=5,fill='grey')
 ligne_sepa.place(relx=0.5, rely=0.4, anchor=CENTER)
 
 #Bouton quitter
-boutton_quit = Button(fenetre_1,text="Quitter", command = fenetre_1.destroy)
-boutton_quit.place(relx=0.85, rely=0.85,width= 100, height= 50, anchor=CENTER)
+boutton_quit = Button(fenetre_1,text="Quitter", command = fenetre_1.destroy).place(relx=0.85, rely=0.85,width= 100, height= 50, anchor=CENTER)
 
 fenetre_1.mainloop()
