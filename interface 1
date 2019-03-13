@@ -1,19 +1,36 @@
 from tkinter import*
 from tkinter.filedialog import *
 
+def img_cont():
+    filepath2 = askopenfilename(title="Choisissez l'image",filetypes=[('png files','.png'),('jpg files','.jpg'),('all files','.*')])
+    photo2 = PhotoImage(file=filepath2)
+    global photo2
+    #affiche l'image conteneur dans une nouvelle fentre
+    fenetre_3 = Toplevel(fenetre_1)
+    Image_canvas = Canvas(fenetre_3, width=photo2.width(), height=photo2.height(),bg="red")
+    Image_canvas.create_image(0,0,anchor=NW,image=photo2)
+    fenetre_3.minsize(photo2.width(),photo2.height())
+    fenetre_3.maxsize(photo2.width(),photo2.height())
+    fenetre_3.title("Image Hidder {}".format(filepath2))
+    Image_canvas.place(relx=0, rely= 0,anchor=NW)
+
 def img_pass():
     filepath = askopenfilename(title="Choisissez l'image",filetypes=[('png files','.png'),('all files','.*')])
     photo = PhotoImage(file=filepath)
     global photo
     #affiche l'image a décripter dans une nouvelle fentre
     fenetre_2 = Toplevel(fenetre_1)
-    Image_canvas = Canvas(fenetre_2, width=photo.width(), height=photo.height(),bg="red")
+    var1= int(photo.height())
+    var2 = var1 + 30
+    Image_canvas = Canvas(fenetre_2, width=photo.width(), height=var2,bg="red")
     Image_canvas.create_image(0,0,anchor=NW,image=photo)
-    Image_canvas.place(relx=0, rely= 0,anchor=NW)
-    fenetre_2.minsize(photo.width(),photo.height())
-    fenetre_2.maxsize(photo.width(),photo.height())
+    fenetre_2.minsize(photo.width(),var2)
+    fenetre_2.maxsize(photo.width(),var2)
     fenetre_2.title("Image Hidded {}".format(filepath))
-
+    boutton_quit = Button(fenetre_3,text="Valider", command = fenetre_1.destroy).Pack(height= 20,ANCHOR=CENTER)
+    Image_canvas.place(relx=0, rely= 0,anchor=NW)
+    
+    
 fenetre_1 = Tk()
 
 fenetre_1.title("Stéganoraphie by Rida and Yasin")
@@ -38,6 +55,9 @@ fenetre_1.minsize(650,400)#taille min en x*y
 
 #afficher l'image pour décripter
 Select_img = Button(fenetre_1,text="selectionnez une image",command = img_pass).place(relx=0.5, rely=0.3,height= 50,width= 300, anchor=CENTER)
+
+#afficher l'image conteneur
+Select_img2 = Button(fenetre_1,text="selectionnez une image",command = img_pass).place(relx=0.5, rely=0.5,height= 50,width= 300, anchor=CENTER)
 
 #afficher une ligne de séparation
 x1= ecran_x * 0.005
