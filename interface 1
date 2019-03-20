@@ -1,7 +1,14 @@
 #!/bin/bash
 # -*- coding: utf-8 -*-
+import PIL
 from tkinter import*
 from tkinter.filedialog import *
+
+def data_imgpass():
+    global fenetre_2
+    fenetre_2.destroy
+    imgpass = open(filepath)
+    Image.show(imgpass)
 
 def img_cont():
     filepath2 = askopenfilename(title="Choisissez l'image",filetypes=[('png files','.png'),('jpg files','.jpg'),('all files','.*')])
@@ -22,7 +29,7 @@ def img_cont():
 
 def img_pass():
     filepath = askopenfilename(title="Choisissez l'image",filetypes=[('png files','.png'),('all files','.*')])
-    global photo
+    global photo,fenetre_2
     photo = PhotoImage(file=filepath)
     #affiche l'image a décripter dans une nouvelle fentre
     fenetre_2 = Toplevel(fenetre_1)
@@ -34,7 +41,7 @@ def img_pass():
     fenetre_2.minsize(photo.width(),var2)
     fenetre_2.maxsize(photo.width(),var2)
     fenetre_2.title("Image Hidded {}".format(filepath))
-    boutton_valid_pass = Button(fenetre_2,text="Valider", command = fenetre_2.destroy).place(relx= 0.5,y= var3,anchor=CENTER)
+    boutton_valid_pass = Button(fenetre_2,text="Valider", command = data_imgpass).place(relx= 0.5,y= var3,anchor=CENTER)
     Image_canvas.place(relx=0, rely= 0,anchor=NW)
 
 
@@ -79,3 +86,4 @@ ligne_sepa.place(relx=0.5, rely=0.4, anchor=CENTER)
 boutton_quit = Button(fenetre_1,text="Quitter", command = fenetre_1.destroy).place(relx=0.85, rely=0.85,width= 100, height= 50, anchor=CENTER)
 
 fenetre_1.mainloop()
+
