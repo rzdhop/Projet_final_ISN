@@ -1,77 +1,108 @@
 #!/bin/bash
 # -*- coding: utf-8 -*-
-import PIL
+import PIL.Image
 from tkinter import*
 from tkinter.filedialog import *
 
-def data_imgpass():
-    global fenetre_2
-    fenetre_2.destroy
-    imgpass = open(filepath)
-    Image.show(imgpass)
+def Stega():
+    global filepath,filepath2
+    im_pass = PIL.Image.open(filepath)
+    im_cont = PIL.Image.open(filepath2)
+    value_test = im_pass.getpixel((0,0))# form RGBA ==> rouge vert bleu Alpha(= Opacity)
+    im_pass_size = im_pass.size
+    im_cont_size = im_cont.size
+
+def valid_imgpass():
+    global fenetre_2,filepath,check_selected,Select_img
+    fenetre_2.destroy()
+    selected_img_pass_label = Label(fenetre_1,text="Img pass selected").place(relx= 0.5, rely= 0.25,anchor=CENTER)
+    Select_img.destroy()
+    check_selected += 1
+    if check_selected == 2:
+        Stega()
+    else:
+        pass
+
+def valid_imgcont():
+    global fenetre_3,filepath2,check_selected,Select_img2
+    fenetre_3.destroy()
+    selected_img_cont_label = Label(fenetre_1,text="Img cont selected").place(relx= 0.5, rely= 0.55,anchor=CENTER)
+    Select_img2.destroy()
+    check_selected += 1
+    if check_selected == 2:
+        Stega()
+    else:
+        pass
 
 def img_cont():
-    filepath2 = askopenfilename(title="Choisissez l'image",filetypes=[('png files','.png'),('jpg files','.jpg'),('all files','.*')])
-    global photo2
-    photo2 = PhotoImage(file=filepath2)
-    #affiche l'image conteneur dans une nouvelle fentre
-    var1= int(photo2.height())
-    var2 = var1 + 30
-    var3 = var1 + 15
-    fenetre_3 = Toplevel(fenetre_1)
-    Image_canvas2 = Canvas(fenetre_3, width=photo2.width(), height=photo2.height())
-    Image_canvas2.create_image(0,0,anchor=NW,image=photo2)
-    fenetre_3.minsize(photo2.width(),var2)
-    fenetre_3.maxsize(photo2.width(),var2)
-    fenetre_3.title("Image Hidder {}".format(filepath2))
-    boutton_valid_cont = Button(fenetre_3,text="Valider", command = fenetre_3.destroy).place(relx= 0.5,y= var3,anchor=CENTER)
-    Image_canvas2.place(relx=0, rely= 0,anchor=NW)
+    global photo2,fenetre_3,filepath2
+    filepath2 = askopenfilename(title="Choisissez l'image",filetypes=[('png files','*.png'),('jpg files','*.jpg')])
+    if len(filepath2) <= 1:
+        pass
+    else:
+        photo2 = PhotoImage(file=filepath2)
+        #affiche l'image conteneur dans une nouvelle fentre
+        var1= int(photo2.height())
+        var2 = var1 + 30
+        var3 = var1 + 15
+        fenetre_3 = Toplevel(fenetre_1)
+        Image_canvas2 = Canvas(fenetre_3, width=photo2.width(), height=photo2.height())
+        Image_canvas2.create_image(0,0,anchor=NW,image=photo2)
+        fenetre_3.minsize(photo2.width(),var2)
+        fenetre_3.maxsize(photo2.width(),var2)
+        fenetre_3.title("Image Hidder {}".format(filepath2))
+        boutton_valid_cont = Button(fenetre_3,text="Valider", command = valid_imgcont, width= photo2.width()).place(relx= 0.5,y= var3,anchor=CENTER)
+        Image_canvas2.place(relx=0, rely= 0,anchor=NW)
 
 def img_pass():
-    filepath = askopenfilename(title="Choisissez l'image",filetypes=[('png files','.png'),('all files','.*')])
-    global photo,fenetre_2
-    photo = PhotoImage(file=filepath)
-    #affiche l'image a décripter dans une nouvelle fentre
-    fenetre_2 = Toplevel(fenetre_1)
-    var1= int(photo.height())
-    var2 = var1 + 30
-    var3 = var1 + 15
-    Image_canvas = Canvas(fenetre_2, width=photo.width(), height=var2)
-    Image_canvas.create_image(0,0,anchor=NW,image=photo)
-    fenetre_2.minsize(photo.width(),var2)
-    fenetre_2.maxsize(photo.width(),var2)
-    fenetre_2.title("Image Hidded {}".format(filepath))
-    boutton_valid_pass = Button(fenetre_2,text="Valider", command = data_imgpass).place(relx= 0.5,y= var3,anchor=CENTER)
-    Image_canvas.place(relx=0, rely= 0,anchor=NW)
+    global photo,fenetre_2,filepath
+    filepath = askopenfilename(title="Choisissez l'image",filetypes=[('png files','*.png'),('jpg files','*.jpg')])
+    if len(filepath) <= 1:
+        pass
+    else:
+        photo = PhotoImage(file=filepath)
+        #affiche l'image a décripter dans une nouvelle fentre
+        fenetre_2 = Toplevel(fenetre_1)
+        var1= int(photo.height())
+        var2 = var1 + 30
+        var3 = var1 + 15
+        Image_canvas = Canvas(fenetre_2, width=photo.width(), height=var2)
+        Image_canvas.create_image(0,0,anchor=NW,image=photo)
+        fenetre_2.minsize(photo.width(),var2)
+        fenetre_2.maxsize(photo.width(),var2)
+        fenetre_2.title("Image Hidded {}".format(filepath))
+        boutton_valid_pass = Button(fenetre_2,text="Valider", command = valid_imgpass, width= photo.width()).place(relx= 0.5,y= var3,anchor=CENTER)
+        Image_canvas.place(relx=0, rely= 0,anchor=NW)
 
+def dimention_fen():
+    global ecran_x
+    #dimension et emplacement de la fentre au lancement du programme
+    fenetre_1.geometry("800x600+0+0")
+    ecran_x = fenetre_1.winfo_screenwidth()
+    ecran_y = fenetre_1.winfo_screenheight()
+    fenetre_x = 800
+    fenetre_y = 600
+    posX = (ecran_x // 2) - (fenetre_x // 2)
+    posY = (ecran_y // 2) - (fenetre_y // 2)
+    geo =("{}x{}+{}+{}".format(fenetre_x,fenetre_y,posX,posY))
+    fenetre_1.geometry(geo)
+    fenetre_1.minsize(650,400)#taille min en x*y
 
+global ecran_x,check_selected
+check_selected = 0
 fenetre_1 = Tk()
 
 fenetre_1.title("Stéganoraphie by Rida and Yasin")
 
-#dimension et emplacement de la fentre au lancement du programme
-fenetre_1.geometry("800x600+0+0")
-
-ecran_x = fenetre_1.winfo_screenwidth()
-ecran_y = fenetre_1.winfo_screenheight()
-
-fenetre_x = 800
-fenetre_y = 600
-
-posX = (ecran_x // 2) - (fenetre_x // 2)
-posY = (ecran_y // 2) - (fenetre_y // 2)
-
-geo =("{}x{}+{}+{}".format(fenetre_x,fenetre_y,posX,posY))
-
-fenetre_1.geometry(geo)
-
-fenetre_1.minsize(650,400)#taille min en x*y
+dimention_fen()
 
 #afficher l'image pour décripter
-Select_img = Button(fenetre_1,text="selectionnez une image pass",command = img_pass).place(relx=0.5, rely=0.3,height= 50,width= 300, anchor=CENTER)
+Select_img = Button(fenetre_1,text="selectionnez une image pass",command = img_pass)
+Select_img.place(relx=0.5, rely=0.3,height= 50,width= 300, anchor=CENTER)
 
 #afficher l'image conteneur
-Select_img2 = Button(fenetre_1,text="selectionnez une image cont",command = img_cont).place(relx=0.5, rely=0.5,height= 50,width= 300, anchor=CENTER)
+Select_img2 = Button(fenetre_1,text="selectionnez une image cont",command = img_cont)
+Select_img2.place(relx=0.5, rely=0.5,height= 50,width= 300, anchor=CENTER)
 
 #afficher une ligne de séparation
 x1= ecran_x * 0.005
@@ -86,4 +117,3 @@ ligne_sepa.place(relx=0.5, rely=0.4, anchor=CENTER)
 boutton_quit = Button(fenetre_1,text="Quitter", command = fenetre_1.destroy).place(relx=0.85, rely=0.85,width= 100, height= 50, anchor=CENTER)
 
 fenetre_1.mainloop()
-
