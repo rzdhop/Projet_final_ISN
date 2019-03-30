@@ -9,9 +9,32 @@ def Stega():
     im_pass = PIL.Image.open(filepath)
     im_cont = PIL.Image.open(filepath2)
     value_test = im_pass.getpixel((0,0))# form RGBA ==> rouge vert bleu Alpha(= Opacity)
+    value_test2 = im_cont.getpixel((0,0))
     im_pass_size = im_pass.size
-    im_cont_size = im_cont.size
-
+    im_cont_size = im_cont.size 
+    RGB_pass = []
+    RGB_cont = []
+    for i in value_test:
+        tmp = int(format(i, "08b"))
+        tmp1 = tmp % 10
+        tmp2 = (tmp // 10) % 10
+        tmp3 = (tmp // 100) % 10
+        tmp1, tmp2, tmp3 = str(tmp1), str(tmp2), str(tmp3)
+        tmp4 = tmp3 + tmp2  + tmp1
+        RGB_pass.append(tmp4)
+    for i in value_test2:
+        tmp = int(format(i, "08b"))
+        tmp1 = tmp % 10
+        tmp2 = (tmp // 10) % 10
+        tmp3 = (tmp // 100) % 10
+        tmp1, tmp2, tmp3 = str(tmp1), str(tmp2), str(tmp3)
+        tmp4 = tmp3 + tmp2  + tmp1
+        RGB_cont.append(tmp4)
+    tuple_RGB_pass = int((RGB_pass[0],RGB_pass[1],RGB_pass[2]))
+    im_pass.putpixel((0,0),tuple_RGB_pass)
+    print(RGB_pass,"\n", RGB_cont)
+    im_pass.show()
+        
 def valid_imgpass():
     global fenetre_2,filepath,check_selected,Select_img
     fenetre_2.destroy()
