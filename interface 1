@@ -14,27 +14,26 @@ def Stega():
     im_cont_size = im_cont.size 
     RGB_pass = []
     RGB_cont = []
+    print(im_pass_size)
     for i in value_test:
-        tmp = int(format(i, "08b"))
-        tmp1 = tmp % 10
-        tmp2 = (tmp // 10) % 10
-        tmp3 = (tmp // 100) % 10
-        tmp1, tmp2, tmp3 = str(tmp1), str(tmp2), str(tmp3)
-        tmp4 = tmp3 + tmp2  + tmp1
-        RGB_pass.append(tmp4)
-    for i in value_test2:
-        tmp = int(format(i, "08b"))
-        tmp1 = tmp % 10
-        tmp2 = (tmp // 10) % 10
-        tmp3 = (tmp // 100) % 10
-        tmp1, tmp2, tmp3 = str(tmp1), str(tmp2), str(tmp3)
-        tmp4 = tmp3 + tmp2  + tmp1
-        RGB_cont.append(tmp4)
-    tuple_RGB_pass = int((RGB_pass[0],RGB_pass[1],RGB_pass[2]))
-    im_pass.putpixel((0,0),tuple_RGB_pass)
-    print(RGB_pass,"\n", RGB_cont)
-    im_pass.show()
-        
+        tmp = str(format(i, "08b"))
+        tmp2 = tmp[5:]
+        RGB_pass.append(tmp2)
+    for j in value_test2:
+        tmp = str(format(j, "08b"))
+        tmp2 = tmp[3:]
+        RGB_cont.append(tmp2)
+    RGB_final = []
+    RGB_final.append(RGB_cont[0] + RGB_pass[0])
+    RGB_final.append(RGB_cont[1] + RGB_pass[1])
+    RGB_final.append(RGB_cont[2] + RGB_pass[2])
+    RGB_decimal = []
+    for a in range(0,3):
+        RGB_decimal.append(int(RGB_final[a],2))
+    tuple_RGB = (RGB_decimal[0],RGB_decimal[1],RGB_decimal[-1])
+    im_cont.putpixel((0,0),tuple_RGB)
+    im_cont.show()
+    
 def valid_imgpass():
     global fenetre_2,filepath,check_selected,Select_img
     fenetre_2.destroy()
@@ -45,7 +44,6 @@ def valid_imgpass():
         Stega()
     else:
         pass
-
 def valid_imgcont():
     global fenetre_3,filepath2,check_selected,Select_img2
     fenetre_3.destroy()
@@ -56,7 +54,6 @@ def valid_imgcont():
         Stega()
     else:
         pass
-
 def img_cont():
     global photo2,fenetre_3,filepath2
     filepath2 = askopenfilename(title="Choisissez l'image",filetypes=[('png files','*.png'),('jpg files','*.jpg')])
