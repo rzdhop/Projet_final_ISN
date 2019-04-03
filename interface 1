@@ -1,6 +1,6 @@
 #!/bin/bash
 # -*- coding: utf-8 -*-
-import PIL.Image
+import PIL.Image, os
 from tkinter import*
 from tkinter.filedialog import *
 
@@ -8,6 +8,14 @@ def Stega():
     global filepath,filepath2
     im_pass = PIL.Image.open(filepath)
     im_cont = PIL.Image.open(filepath2)
+    ext = os.path.splitext('filepath')
+    ext2 = os.path.splitext('filepath2')
+    if ext[1] != ".png":
+        img_pass.save(ext[0],".png")
+    elif ext2[1] != ".png":
+        img_cont.save(ext[0],".png")
+    else:
+        pass
     value_test = im_pass.getpixel((0,0))# form RGBA ==> rouge vert bleu Alpha(= Opacity)
     value_test2 = im_cont.getpixel((0,0))
     im_pass_size = im_pass.size
@@ -76,7 +84,7 @@ def img_cont():
 
 def img_pass():
     global photo,fenetre_2,filepath
-    filepath = askopenfilename(title="Choisissez l'image",filetypes=[('png files','*.png'),('jpg files','*.jpg')])
+    filepath = askopenfilename(title="Choisissez l'image",filetypes=[('png files','*.png'),('jpg files','*.JPG')])
     if len(filepath) <= 1:
         pass
     else:
