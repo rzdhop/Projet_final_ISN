@@ -8,12 +8,15 @@ def Stega():
     global filepath,filepath2
     im_pass = PIL.Image.open(filepath)
     im_cont = PIL.Image.open(filepath2)
-    width_x, height_y = im_pass.size #(x,y)
-    width_x2, height_y2 = im_cont.size #(x,y)
-    resize_xy = width_x2, height_y2
-    im_pass.thumbnail(resize_xy)
-    for x in range(width_x):
-        for y in range(height_y):
+    width_pass, height_pass = im_pass.size #(x,y)
+    width_cont, height_cont = im_cont.size #(x,y)
+    if width_pass > width_cont or height_pass > height_cont:
+        resize_pass = width_cont, height_cont
+        resize_cont = width_cont*2, width_cont*2
+        im_pass.thumbnail(resize_pass)
+        im_cont.thumbnail(resize_cont)
+    for x in range(width_pass):
+        for y in range(height_pass):
             try:
                 value_test = im_pass.getpixel((x,y))# form RGBA ==> rouge vert bleu Alpha(= Opacity)
                 value_test2 = im_cont.getpixel((x,y))
@@ -37,7 +40,7 @@ def Stega():
             for a in range(0,3):
                 RGB_decimal.append(int(RGB_final[a],2))
             tuple_RGB = (RGB_decimal[0],RGB_decimal[1],RGB_decimal[-1])
-            print(f"==>{tuple_RGB} {x}/{width_x} {y}/{height_y}")
+            print(f"==>{tuple_RGB} {x}/{width_pass} {y}/{height_pass}")
             try:
                 im_cont.putpixel((x,y),tuple_RGB)
             except IndexError:
