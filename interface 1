@@ -26,11 +26,11 @@ def Stega():
             RGB_cont = []
             for i in value_test:
                 tmp = str(format(i, "08b"))
-                tmp2 = tmp[5:]
+                tmp2 = tmp[4:]
                 RGB_pass.append(tmp2)
             for j in value_test2:
                 tmp = str(format(j, "08b"))
-                tmp2 = tmp[:3]
+                tmp2 = tmp[:4]
                 RGB_cont.append(tmp2)
             RGB_final = []
             RGB_final.append(RGB_cont[0] + RGB_pass[0])
