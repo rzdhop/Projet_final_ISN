@@ -13,12 +13,7 @@ def Stega():
     resize_xy = width_x2, height_y2
     im_pass.thumbnail(resize_xy)
     for x in range(width_x):
-        if x > width_x:
-            break
         for y in range(height_y):
-            if y > height_y:
-                print("did i work ?")
-                break
             try:
                 value_test = im_pass.getpixel((x,y))# form RGBA ==> rouge vert bleu Alpha(= Opacity)
                 value_test2 = im_cont.getpixel((x,y))
@@ -32,7 +27,7 @@ def Stega():
                 RGB_pass.append(tmp2)
             for j in value_test2:
                 tmp = str(format(j, "08b"))
-                tmp2 = tmp[3:]
+                tmp2 = tmp[:3]
                 RGB_cont.append(tmp2)
             RGB_final = []
             RGB_final.append(RGB_cont[0] + RGB_pass[0])
