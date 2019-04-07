@@ -8,43 +8,49 @@ def Stega():
     global filepath,filepath2
     im_pass = PIL.Image.open(filepath)
     im_cont = PIL.Image.open(filepath2)
-    ext = os.path.splitext('filepath')
-    ext2 = os.path.splitext('filepath2')
-    if ext[1] != ".png":
-        img_pass.save(ext[0],".png")
-    elif ext2[1] != ".png":
-        img_cont.save(ext[0],".png")
-    else:
-        pass
-    value_test = im_pass.getpixel((0,0))# form RGBA ==> rouge vert bleu Alpha(= Opacity)
-    value_test2 = im_cont.getpixel((0,0))
-    im_pass_size = im_pass.size
-    im_cont_size = im_cont.size 
-    RGB_pass = []
-    RGB_cont = []
-    print(im_pass_size)
-    for i in value_test:
-        tmp = str(format(i, "08b"))
-        tmp2 = tmp[5:]
-        RGB_pass.append(tmp2)
-    for j in value_test2:
-        tmp = str(format(j, "08b"))
-        tmp2 = tmp[3:]
-        RGB_cont.append(tmp2)
-    RGB_final = []
-    RGB_final.append(RGB_cont[0] + RGB_pass[0])
-    RGB_final.append(RGB_cont[1] + RGB_pass[1])
-    RGB_final.append(RGB_cont[2] + RGB_pass[2])
-    RGB_decimal = []
-    for a in range(0,3):
-        RGB_decimal.append(int(RGB_final[a],2))
-    tuple_RGB = (RGB_decimal[0],RGB_decimal[1],RGB_decimal[-1])
-    im_cont.putpixel((0,0),tuple_RGB)
+    width_x, height_y = im_pass.size #(x,y)
+    width_x2, height_y2 = im_cont.size #(x,y)
+    resize_xy = width_x2, height_y2
+    im_pass.thumbnail(resize_xy)
+    for x in range(width_x):
+        if x > width_x:
+            break
+        for y in range(height_y):
+            if y > height_y:
+                print("did i work ?")
+                break
+            try:
+                value_test = im_pass.getpixel((x,y))# form RGBA ==> rouge vert bleu Alpha(= Opacity)
+                value_test2 = im_cont.getpixel((x,y))
+            except IndexError:
+                pass
+            RGB_pass = []
+            RGB_cont = []
+            for i in value_test:
+                tmp = str(format(i, "08b"))
+                tmp2 = tmp[5:]
+                RGB_pass.append(tmp2)
+            for j in value_test2:
+                tmp = str(format(j, "08b"))
+                tmp2 = tmp[3:]
+                RGB_cont.append(tmp2)
+            RGB_final = []
+            RGB_final.append(RGB_cont[0] + RGB_pass[0])
+            RGB_final.append(RGB_cont[1] + RGB_pass[1])
+            RGB_final.append(RGB_cont[2] + RGB_pass[2])
+            RGB_decimal = []
+            for a in range(0,3):
+                RGB_decimal.append(int(RGB_final[a],2))
+            tuple_RGB = (RGB_decimal[0],RGB_decimal[1],RGB_decimal[-1])
+            print(f"==>{tuple_RGB} {x}/{width_x} {y}/{height_y}")
+            try:
+                im_cont.putpixel((x,y),tuple_RGB)
+            except IndexError:
+                pass
     im_cont.show()
-    
+
 def valid_imgpass():
-    global fenetre_2,filepath,check_selected,Select_img
-    fenetre_2.destroy()
+    global filepath,check_selected,Select_img
     selected_img_pass_label = Label(fenetre_1,text="Img pass selected").place(relx= 0.5, rely= 0.25,anchor=CENTER)
     Select_img.destroy()
     check_selected += 1
@@ -53,8 +59,7 @@ def valid_imgpass():
     else:
         pass
 def valid_imgcont():
-    global fenetre_3,filepath2,check_selected,Select_img2
-    fenetre_3.destroy()
+    global filepath2,check_selected,Select_img2
     selected_img_cont_label = Label(fenetre_1,text="Img cont selected").place(relx= 0.5, rely= 0.55,anchor=CENTER)
     Select_img2.destroy()
     check_selected += 1
@@ -68,19 +73,7 @@ def img_cont():
     if len(filepath2) <= 1:
         pass
     else:
-        photo2 = PhotoImage(file=filepath2)
-        #affiche l'image conteneur dans une nouvelle fentre
-        var1= int(photo2.height())
-        var2 = var1 + 30
-        var3 = var1 + 15
-        fenetre_3 = Toplevel(fenetre_1)
-        Image_canvas2 = Canvas(fenetre_3, width=photo2.width(), height=photo2.height())
-        Image_canvas2.create_image(0,0,anchor=NW,image=photo2)
-        fenetre_3.minsize(photo2.width(),var2)
-        fenetre_3.maxsize(photo2.width(),var2)
-        fenetre_3.title("Image Hidder {}".format(filepath2))
-        boutton_valid_cont = Button(fenetre_3,text="Valider", command = valid_imgcont, width= photo2.width()).place(relx= 0.5,y= var3,anchor=CENTER)
-        Image_canvas2.place(relx=0, rely= 0,anchor=NW)
+        valid_imgcont()
 
 def img_pass():
     global photo,fenetre_2,filepath
@@ -88,19 +81,7 @@ def img_pass():
     if len(filepath) <= 1:
         pass
     else:
-        photo = PhotoImage(file=filepath)
-        #affiche l'image a décripter dans une nouvelle fentre
-        fenetre_2 = Toplevel(fenetre_1)
-        var1= int(photo.height())
-        var2 = var1 + 30
-        var3 = var1 + 15
-        Image_canvas = Canvas(fenetre_2, width=photo.width(), height=var2)
-        Image_canvas.create_image(0,0,anchor=NW,image=photo)
-        fenetre_2.minsize(photo.width(),var2)
-        fenetre_2.maxsize(photo.width(),var2)
-        fenetre_2.title("Image Hidded {}".format(filepath))
-        boutton_valid_pass = Button(fenetre_2,text="Valider", command = valid_imgpass, width= photo.width()).place(relx= 0.5,y= var3,anchor=CENTER)
-        Image_canvas.place(relx=0, rely= 0,anchor=NW)
+        valid_imgpass()
 
 def dimention_fen():
     global ecran_x
