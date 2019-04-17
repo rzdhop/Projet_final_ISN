@@ -3,6 +3,7 @@
 import PIL.Image, os
 from tkinter import*
 from tkinter.filedialog import *
+import time
 
 def Stega():
     global filepath,filepath2
@@ -62,7 +63,10 @@ def valid_imgpass():
     Select_img.destroy()
     check_selected += 1
     if check_selected == 2:
+        fenetre_2 = Toplevel(fenetre_1)
+        time.sleep(0.5)
         Stega()
+        fenetre_2.mainloop()
     else:
         pass
         
@@ -72,7 +76,10 @@ def valid_imgcont():
     Select_img2.destroy()
     check_selected += 1
     if check_selected == 2:
+        fenetre_2 = Toplevel(fenetre_1)
+        time.sleep(0.5)
         Stega()
+        fenetre_2.mainloop()
     else:
         pass
         
