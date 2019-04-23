@@ -3,15 +3,21 @@
 import PIL.Image, os
 from tkinter import*
 from tkinter.filedialog import *
-import time
+import time, threading
 
+def Threading():
+    global thread_1, thread_2
+    thread_1 = threading.Thread(target=pre_stega, args=())
+    thread_2 = threading.Thread(target=Stega, args=())
+    thread_1.start()
+    thread_2.start()
 def Stega():
-    global filepath,filepath2
+    global filepath,filepath2, thread_2
     im_pass = PIL.Image.open(filepath)
     im_cont = PIL.Image.open(filepath2)
     width_pass, height_pass = im_pass.size #(x,y)
     width_cont, height_cont = im_cont.size #(x,y)
-    if width_pass > width_cont or height_pass > height_cont:
+    if width_pass >= width_cont or height_pass >= height_cont:
         resize_pass = width_cont, height_cont
         resize_cont = width_cont*2, height_cont*2
         im_pass.thumbnail(resize_pass)
@@ -46,16 +52,22 @@ def Stega():
                 im_cont.putpixel((x,y),tuple_RGB)
             except IndexError:
                 pass
-    im_cont.save("Desktop/img.png")
-    
+    #im_cont.save("Desktop/img.png")
+    im_cont.show()
+def pre_stega():
+    global fenetre_1, thread_1, geo2
+    fenetre_2 = Toplevel(fenetre_1)
+    fenetre_2.title("Loading...")
+    fenetre_2.geometry(geo2)
+    Label_waiting = Label(fenetre_2, text="Patientez pendant que le programme Cache l'image....")
+    fenetre_2.mainloop()
 def valid_imgpass():
     global filepath,check_selected,Select_img
     name, ext = os.path.splitext(filepath)
     vi_pass = PIL.Image.open(filepath)
     vi_pass.thumbnail((100, 100))
-    vi_pass.save(name+".png")
-    canvas1 = Canvas(width=105, height=105)
-    canvas1.place(relx = 0.435, rely= 0.05)
+    canvas1 = Canvas(fenetre_1,width=150, height=150,bg="red")
+    canvas1.place(relx = 3, rely= 0.05)
     vi_pass_can = PhotoImage(file=filepath)
     canvas1.create_image(100, 100, image=vi_pass_can, anchor=NW)
 
@@ -63,26 +75,20 @@ def valid_imgpass():
     Select_img.destroy()
     check_selected += 1
     if check_selected == 2:
-        fenetre_2 = Toplevel(fenetre_1)
-        time.sleep(0.5)
-        Stega()
-        fenetre_2.mainloop()
+        time.sleep(0.3)
+        Thr
     else:
         pass
-        
 def valid_imgcont():
     global filepath2,check_selected,Select_img2
     selected_img_cont_label = Label(fenetre_1,text="Img cont selected").place(relx= 0.5, rely= 0.55,anchor=CENTER)
     Select_img2.destroy()
     check_selected += 1
     if check_selected == 2:
-        fenetre_2 = Toplevel(fenetre_1)
-        time.sleep(0.5)
-        Stega()
-        fenetre_2.mainloop()
+        time.sleep(0.3)
+        Threading()
     else:
         pass
-        
 def img_cont():
     global photo2,fenetre_3,filepath2
     filepath2 = askopenfilename(title="Choisissez l'image",filetypes=[('png files','*.png'),('jpg files','*.jpg')])
@@ -90,7 +96,6 @@ def img_cont():
         pass
     else:
         valid_imgcont()
-        
 def img_pass():
     global photo,fenetre_2,filepath
     filepath = askopenfilename(title="Choisissez l'image",filetypes=[('png files','*.png'),('jpg files','*.JPG')])
@@ -98,9 +103,8 @@ def img_pass():
         pass
     else:
         valid_imgpass()
-        
 def dimention_fen():
-    global ecran_x
+    global ecran_x, geo2
     #dimension et emplacement de la fentre au lancement du programme
     fenetre_1.geometry("800x600+0+0")
     ecran_x = fenetre_1.winfo_screenwidth()
@@ -112,6 +116,10 @@ def dimention_fen():
     geo =("{}x{}+{}+{}".format(fenetre_x,fenetre_y,posX,posY))
     fenetre_1.geometry(geo)
     fenetre_1.minsize(650,400)#taille min en x*y
+
+    fenetre_x = 300
+    fenetre_y = 150
+    geo2 =("{}x{}+{}+{}".format(fenetre_x,fenetre_y,int(posX+posX/2),int(posY+posY/2)))
 
 global ecran_x,check_selected
 check_selected = 0
