@@ -1,9 +1,8 @@
 #!/bin/bash
 # -*- coding: utf-8 -*-
-import PIL.Image, os
+import PIL.Image, os, time, threading
 from tkinter import*
 from tkinter.filedialog import *
-import time, threading
 
 def Threading():
     global thread_1, thread_2
@@ -59,7 +58,7 @@ def pre_stega():
     fenetre_2 = Toplevel(fenetre_1)
     fenetre_2.title("Loading...")
     fenetre_2.geometry(geo2)
-    Label_waiting = Label(fenetre_2, text="Patientez pendant que le programme Cache l'image....")
+    Label_waiting = Label(fenetre_2, text="Patientez pendant que le programme Cache l'image....").pack()
     fenetre_2.mainloop()
 def valid_imgpass():
     global filepath,check_selected,Select_img
