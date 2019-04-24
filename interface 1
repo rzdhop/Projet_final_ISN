@@ -46,7 +46,7 @@ def de_stega():
                 im_destega.putpixel((x,y),tuple_RGB)
             except IndexError:
                 pass
-    fenetre_2.destroy()
+    fenetre_3.destroy()
     im_destega.show()
 def Threading():
     global thread_1, thread_2, thread_3, thread_4, de_stega_cond
@@ -107,12 +107,12 @@ def Stega():
     im_cont.save("image contenaire.png", quality=100)
     im_cont.show()
 def pre_stega():
-    global fenetre_1, thread_1, geo2, fenetre_2
-    fenetre_2 = Toplevel(fenetre_1)
-    fenetre_2.title("Loading...")
-    fenetre_2.geometry(geo2)
-    Label_waiting = Label(fenetre_2, text="Patientez pendant que le programme Cache l'image....").pack()
-    fenetre_2.mainloop()
+    global fenetre_1, thread_1, geo2, fenetre_3
+    fenetre_3 = Toplevel(fenetre_1)
+    fenetre_3.title("Loading...")
+    fenetre_3.geometry(geo2)
+    Label_waiting = Label(fenetre_3, text="Patientez pendant que le programme Cache l'image....").pack()
+    fenetre_3.mainloop()
 def pre_destega():
     global fenetre_1, thread_1, geo2, fenetre_2
     fenetre_2 = Toplevel(fenetre_1)
