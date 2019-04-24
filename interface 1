@@ -47,17 +47,18 @@ def de_stega():
             except IndexError:
                 pass
     fenetre_3.destroy()
+    im_cont.save("image destega.png", quality=100)
     im_destega.show()
 def Threading():
-    global thread_1, thread_2, thread_3, thread_4, de_stega_cond
+    global de_stega_cond
     if de_stega_cond.get() == True:
-        thread_3 = threading.Thread(target=de_stega, args=())
-        thread_4 = threading.Thread(target=pre_destega, args=())
-        thread_3.start()
-        thread_4.start()
-    elif de_stega_cond.get() == False:
-        thread_1 = threading.Thread(target=pre_stega, args=())
-        thread_2 = threading.Thread(target=Stega, args=())
+        thread_1 = threading.Thread(target=de_stega, args=())
+        thread_2 = threading.Thread(target=pre_destega, args=())
+        thread_1.start()
+        thread_2.start()
+    else:
+        thread_1 = threading.Thread(target=Stega, args=())
+        thread_2 = threading.Thread(target=pre_stega, args=())
         thread_1.start()
         thread_2.start()
 def Stega():
@@ -102,24 +103,23 @@ def Stega():
                 im_cont.putpixel((x,y),tuple_RGB)
             except IndexError:
                 pass
-    #im_cont.save("Desktop/img.png")
     fenetre_2.destroy()
     im_cont.save("image contenaire.png", quality=100)
     im_cont.show()
 def pre_stega():
-    global fenetre_1, thread_1, geo2, fenetre_3
-    fenetre_3 = Toplevel(fenetre_1)
-    fenetre_3.title("Loading...")
-    fenetre_3.geometry(geo2)
-    Label_waiting = Label(fenetre_3, text="Patientez pendant que le programme Cache l'image....").pack()
-    fenetre_3.mainloop()
-def pre_destega():
     global fenetre_1, thread_1, geo2, fenetre_2
     fenetre_2 = Toplevel(fenetre_1)
     fenetre_2.title("Loading...")
     fenetre_2.geometry(geo2)
-    Label_waiting = Label(fenetre_2, text="Patientez pendant que le programme retrouve l'image....").pack()
+    Label_waiting = Label(fenetre_2, text="Patientez pendant que le programme Cache l'image....").pack()
     fenetre_2.mainloop()
+def pre_destega():
+    global fenetre_1, thread_1, geo2, fenetre_3
+    fenetre_3 = Toplevel(fenetre_1)
+    fenetre_3.title("Loading...")
+    fenetre_3.geometry(geo2)
+    Label_waiting = Label(fenetre_3, text="Patientez pendant que le programme retrouve l'image....").pack()
+    fenetre_3.mainloop()
 def valid_imgpass():
     global filepath,check_selected,Select_img, fenetre_1, de_stega_cond
     print(de_stega_cond.get())
@@ -138,7 +138,7 @@ def valid_imgpass():
         if de_stega_cond.get() == True:
             time.sleep(0.3)
             Select_img3 = Button(fenetre_1,text="selectionnez une image steganographié",command = img_de_stega)
-            Select_img3.place(rely= 0.5, relx= 0.4)
+            Select_img3.place(rely= 0.4, relx= 0.5, height= 50, width= 300, anchor=CENTER)
         elif de_stega_cond() == False:
             time.sleep(0.3)
             Threading()
@@ -154,7 +154,7 @@ def valid_imgcont():
         if de_stega_cond.get() == True:
             time.sleep(0.3)
             Select_img3 = Button(fenetre_1,text="selectionnez une image steganographié",command = img_de_stega)
-            Select_img3.place(rely= 0.5, relx= 0.4)
+            Select_img3.place(rely= 0.4, relx= 0.5, height= 50, width= 300, anchor=CENTER)
         elif de_stega_cond.get() == False:
             time.sleep(0.3)
             Threading()
@@ -166,7 +166,7 @@ def valid_img_destega():
         if de_stega_cond == True:
             time.sleep(0.3)
             Select_img3 = Button(fenetre_1,text="selectionnez une image steganographié",command = img_de_stega)
-            Select_img3.place(rely= 0.3, relx= 0.35, height= 50, width= 300, anchor=CENTER)
+            Select_img3.place(rely= 0.4, relx= 0.5, height= 50, width= 300, anchor=CENTER)
         elif de_stega_cond == False:
             time.sleep(0.3)
             Threading()
