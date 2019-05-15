@@ -1,15 +1,29 @@
 #!/bin/bash
 # -*- coding: utf-8 -*-
-import PIL.Image, os, time, threading
+import PIL.Image, os, time, threading, Queue
 from tkinter import*
 from tkinter.filedialog import *
 
+class thread():
+    def __init__(self, fonc1, fonc2):
+        self.thread_1 = Queue()
+        self.thread_2 = Queue()
+        self.thread_1 = threading.Thread(target=fonc1, args=())
+        self.thread_2 = threading.Thread(target=fonc2, args=())
+        self.thread_1.start()
+        self.thread_2.start()
+
+
+def progress_destega(currentValue):
+    maxValue=100
+    progressbar["value"]=currentValue
+
 def de_stega():
-    global filepath,filepath2, thread_2, fenetre_2
+    global filepath,filepath2, fenetre_2
     im_pass = PIL.Image.open(filepath)
     im_destega = PIL.Image.open(filepath3)
     width_pass, height_pass = im_pass.size #(x,y)
-    width_cont, height_cont = im_cont.size #(x,y)
+    width_cont, height_cont = im_destega.size #(x,y)
     if width_pass >= width_cont or height_pass >= height_cont:
         resize_pass = width_cont, height_cont
         resize_cont = width_cont*2, height_cont*2
@@ -49,20 +63,16 @@ def de_stega():
     fenetre_3.destroy()
     im_cont.save("image destega.png", quality=100)
     im_destega.show()
+    
 def Threading():
-    global de_stega_cond
     if de_stega_cond.get() == True:
-        thread_1 = threading.Thread(target=de_stega, args=())
-        thread_2 = threading.Thread(target=pre_destega, args=())
-        thread_1.start()
-        thread_2.start()
-    else:
-        thread_1 = threading.Thread(target=Stega, args=())
-        thread_2 = threading.Thread(target=pre_stega, args=())
-        thread_1.start()
-        thread_2.start()
+        var1 = thread(pre_destega, de_stega)
+    elif de_stega_cond.get() == False:
+        var2 = thread(pre_stega, Stega)
+    else: 
+        print("Nique ta mere")
 def Stega():
-    global filepath,filepath3, thread_2, fenetre_2
+    global filepath,filepath3, fenetre_2
     im_pass = PIL.Image.open(filepath)
     im_cont = PIL.Image.open(filepath2)
     width_pass, height_pass = im_pass.size #(x,y)
@@ -106,15 +116,17 @@ def Stega():
     fenetre_2.destroy()
     im_cont.save("image contenaire.png", quality=100)
     im_cont.show()
+    
 def pre_stega():
-    global fenetre_1, thread_1, geo2, fenetre_2
+    global fenetre_1, geo2, fenetre_2
     fenetre_2 = Toplevel(fenetre_1)
     fenetre_2.title("Loading...")
     fenetre_2.geometry(geo2)
     Label_waiting = Label(fenetre_2, text="Patientez pendant que le programme Cache l'image....").pack()
     fenetre_2.mainloop()
+    
 def pre_destega():
-    global fenetre_1, thread_1, geo2, fenetre_3
+    global fenetre_1, geo2, fenetre_3
     fenetre_3 = Toplevel(fenetre_1)
     fenetre_3.title("Loading...")
     fenetre_3.geometry(geo2)
@@ -144,6 +156,7 @@ def valid_imgpass():
             Threading()
     else:
         pass
+        
 def valid_imgcont():
     global filepath2,check_selected,Select_img2, de_stega_cond
     print(de_stega_cond.get())
