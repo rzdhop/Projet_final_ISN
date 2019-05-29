@@ -73,7 +73,7 @@ def UnStegaProcess():
             except IndexError:
                 pass
     ImgToRetreive.save("Image Decoded.png", quality=100)
-    print("Finished !")
+    EndDecode()
 
 def StegaProcess():
     global filepath, filepath2, fenetre_encode
