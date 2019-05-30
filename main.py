@@ -116,34 +116,18 @@ def StegaProcess():
 ############################################################################################
 
 def ImgToDecode(filepath):
-    global fenetre_decode
-    vi_pass = PIL.Image.open(filepath)
-    canvas = Canvas(fenetre_decode ,width=100, height=200,bg="red")
-    canvas.place(relx = 0.4, rely= 0.5)
-    vi_pass_can = PhotoImage(file=filepath)
-    canvas.create_image(300, 200, image=vi_pass_can, anchor=NW)
     time.sleep(0.3)
     UnStegaProcess()
 
 def ImgToHide(filepath):
-    global fenetre_encode, ValidStep
-    vi_pass = PIL.Image.open(filepath)
-    canvas = Canvas(fenetre_encode ,width=100, height=200,bg="red")
-    canvas.place(relx = 0.4, rely= 0.5)
-    vi_pass_can = PhotoImage(file=filepath)
-    canvas.create_image(300, 200, image=vi_pass_can, anchor=CENTER)
+    global ValidStep
     ValidStep += 1
     if ValidStep == 2:
         time.sleep(0.3)
         StegaProcess()
 
 def ImgReceiver(filepath2):
-    global fenetre_encode, ValidStep
-    vi_pass = PIL.Image.open(filepath2)
-    canvas = Canvas(fenetre_encode ,width=100, height=200,bg="red")
-    canvas.place(relx = 0.4, rely= 0.5)
-    vi_pass_can = PhotoImage(file=filepath2)
-    canvas.create_image(300, 200, image=vi_pass_can, anchor=CENTER)
+    global ValidStep
     ValidStep += 1
     if ValidStep == 2:
         time.sleep(0.3)
