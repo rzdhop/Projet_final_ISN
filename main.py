@@ -92,7 +92,7 @@ def StegaProcess():
             RGB_cont = []
             for i in value_test:
                 tmp = str(ToBinary(i))
-                tmp2 = tmp[4:]
+                tmp2 = tmp[:4]
                 RGB_pass.append(tmp2)
             for j in value_test2:
                 tmp = str(ToBinary(j))
