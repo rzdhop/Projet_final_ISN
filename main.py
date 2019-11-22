@@ -169,7 +169,7 @@ def Decode():
     fenetre_decode = Tk()
     reglage = Dim_fen()
     reglage.sized(parent= fenetre_decode)
-    fenetre_decode.title("Decode by Naylor")
+    fenetre_decode.title("Decode by IchInose")
     #afficher l'image pour décripter
     Select_img = Button(fenetre_decode,text="Image a decoder",command = img_decode)
     Select_img.place(relx=0.5, rely=0.45,height= 50,width= 300, anchor=CENTER)
@@ -184,7 +184,7 @@ def Encode():
     fenetre_encode = Tk()
     reglage = Dim_fen()
     reglage.sized(parent= fenetre_encode)
-    fenetre_encode.title("Encode by Naylor")
+    fenetre_encode.title("Encode by IchInose")
     #afficher l'image pour décripter
     Select_img = Button(fenetre_encode,text="Image a cacher",command = img_pass)
     Select_img.place(relx=0.5, rely=0.3,height= 50,width= 300, anchor=CENTER)
@@ -202,7 +202,7 @@ def Encode():
 def commencement():
     global fenetre_1
     fenetre_1 = Tk()
-    fenetre_1.title("Stéganoraphie by Naylor")
+    fenetre_1.title("Stéganoraphie by IchInose")
     reglage = Dim_fen()
     reglage.sized(parent= fenetre_1)
     #afficher l'image pour décripter
